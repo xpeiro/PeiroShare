@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html data-ng-app="PeiroShare" data-ng-controller="PeiroShareController">
+<head>
+	<title>PeiroShare</title>
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="javascripts/angular/angular.min.js"></script>
+	<script type="text/javascript" src="javascripts/angularapp.js"></script>
+	<script type="text/javascript" src="javascripts/socket.io.min.js"></script>
+</head>
+<body>
+<textarea id="text" placeholder="Enter text..." data-ng-model="text"></textarea>
+<button id="send" data-ng-click="send()">Send</button>
+<br>
+<table id="historyTable" class="table" data-compile="historyTable" data-ng-if="true"></table>
+</body>
+</html>

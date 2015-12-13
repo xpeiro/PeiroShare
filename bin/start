@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+/*  
+    Domain module used to catch app errors elegantly and exit app
+    No need to modify this code.
+*/
+var domain = require('domain').create();
+var debug;
+var app;
+//Start main app
+domain.run(function() {
+debug = require('debug')('PeiroShare');
+app = require('../app');
+});
+
+domain.on('error', function(error) {
+    console.log('PeiroShare error: ', error.message);
+    console.log('Stack Trace: ', error.stack);
+    process.exit(1);
+});
+
+
+
+
+
