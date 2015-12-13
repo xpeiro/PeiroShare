@@ -10,7 +10,6 @@ app.controller('PeiroShareController', ['$rootScope', '$scope',
 		scope.text = "";
 		scope.send = function() {
 			socket.emit("newText", scope.text);
-
 		};
 		scope.copy = function(e, index) {
 			console.log(index);
@@ -19,10 +18,10 @@ app.controller('PeiroShareController', ['$rootScope', '$scope',
 		};
 		socket.on("newHistory", function(data) {
 			console.log(data);
+			scope.historyTable = generateHistoryTable(data.reverse());
+			scope.$apply();
 		});
 
-		scope.history = ["test1", "test2", "test3"];
-		scope.historyTable = generateHistoryTable(scope.history);
 
 		function generateHistoryTable(history) {
 			var historyTable = "<tr><th colspan=3>History</th></tr>";
