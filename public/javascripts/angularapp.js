@@ -4,36 +4,54 @@ var app = angular.module('PeiroShare', []);
 //main app controller. manages active modules, profiles and notifies back-end of change in controls when necessary.
 app.controller('PeiroShareController', ['$rootScope', '$scope',
 	function(rootScope, scope) {
-		var socket = io.connect({
-			secure: true
-		});
+		var socket = io.connect();
 		scope.text = "";
+		scope.enabled = !document.queryCommandSupported('copy');
 		scope.send = function() {
-			socket.emit("newText", scope.text);
+			if (scope.text != "") {
+				socket.emit("newText", scope.text);
+				scope.text = "";
+			};
 		};
-		scope.copy = function(e, index) {
-			console.log(index);
-			var clip = new ClipboardEvent('copy');
-			clip.clipboardData.setData('text/plain', "testeo");
+		scope.copy = function(index) {
+			//copied from https://developers.google.com/web/updates/2015/04/cut-and-copy-commands?hl=en 
+			//by Matt Gaunt
+			var copyText = document.getElementById('historyItem' + index);
+			var range = document.createRange();
+			range.selectNode(copyText);
+			window.getSelection().addRange(range);
+			try {
+				document.execCommand('copy');
+			} catch (err) {
+				console.log('Error copying text');
+			}
+			window.getSelection().removeAllRanges();
 		};
+		scope.ifEnterSend = function(e) {
+			if (e.keyCode == 13 && !e.shiftKey) {
+				e.preventDefault();
+				scope.send();
+			}
+		};
+		scope.clear = function () {
+			socket.emit("clearHistory");
+		}
 		socket.on("newHistory", function(data) {
-			console.log(data);
 			scope.historyTable = generateHistoryTable(data.reverse());
 			scope.$apply();
 		});
 
-
 		function generateHistoryTable(history) {
-			var historyTable = "<tr><th colspan=3>History</th></tr>";
+			var historyTable = "<tr><th colspan=2>History</th><th><button data-ng-click='clear()'>Clear</button></th></tr>";
 			for (var i = 0; i < history.length; i++) {
 				//begin row and element
-				historyTable = historyTable.concat("<tr><td>", i + 1, "</td><td>");
+				historyTable = historyTable.concat("<tr><td>", i + 1, "</td><td id='historyItem" + i + "'>");
 				//add item
 				historyTable = historyTable.concat(history[i]);
 				//end element
 				historyTable = historyTable.concat("</td>");
 				//add copy button
-				historyTable = historyTable.concat("<td><button data-ng-click='copy($event," + i + ")''>Copy</button></td>");
+				historyTable = historyTable.concat("<td><button data-ng-click='copy(" + i + ")'>Copy</button></td>");
 				//end row
 				historyTable = historyTable.concat("</tr>");
 			};

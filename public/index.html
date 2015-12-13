@@ -9,8 +9,10 @@
 	<script type="text/javascript" src="javascripts/socket.io.min.js"></script>
 </head>
 <body>
-<textarea id="text" placeholder="Enter text..." data-ng-model="text"></textarea>
+<div>
+<textarea id="text" placeholder="Enter text..." data-ng-model="text" data-ng-keypress="ifEnterSend($event)"></textarea>
 <button id="send" data-ng-click="send()">Send</button>
+</div>
 <br>
 <table id="historyTable" class="table" data-compile="historyTable" data-ng-if="true"></table>
 </body>

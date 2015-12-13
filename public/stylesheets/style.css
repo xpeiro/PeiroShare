@@ -1,6 +1,8 @@
 
 tr, td, th {
     border: 1px solid black;
+    max-width: 60px;
+    overflow-x: hidden;
 }
 
 #send {
@@ -24,8 +26,12 @@ table {
 }
 
 @media only screen and (max-width: 480px) {
+
+	div {
+		width: 100%;
+	}
 	textarea {
-		width: 98%;
+		width: 80%;
 	}
 	button {
 		width: 100%;

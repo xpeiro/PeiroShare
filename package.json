@@ -6,11 +6,14 @@
     "start": "node ./bin/start"
   },
   "dependencies": {
+    "compression": "*",
     "debug": "~2.2.0",
     "express": "~4.13.1",
-    "compression": "*",
     "morgan": "~1.6.1",
+    "request-json": "^0.5.3",
     "serve-favicon": "~2.3.0",
-    "socket.io": "*"
+    "socket.io": "*",
+    "valid-url": "^1.0.9",
+    "request": "*"
   }
 }
