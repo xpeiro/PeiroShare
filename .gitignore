@@ -1,3 +1,6 @@
+#*
 *.key*
 *.crt
 *.csr
+node_modules
+npm_debug.log
